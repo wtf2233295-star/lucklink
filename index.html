@@ -3,93 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>2026离火流年运势·专业版</title>
+    <title>2026离火贺岁 · 天命锦鲤</title>
     <style>
-        :root { --main-gold: #D4AF37; --deep-red: #7C0A02; --text-color: #F5F5DC; }
-        body, html { margin: 0; padding: 0; background: #0a0a0a; color: var(--text-color); font-family: 'PingFang SC', sans-serif; }
+        /* 导入字体 - 确保有古风新年感 */
+        @font-face {
+            font-family: 'YouYuan'; /* 优美古风字体 */
+            src: url('https://raw.githubusercontent.com/google/fonts/main/ofl/notosansjp/NotoSansJP-Regular.otf') format('opentype');
+            /* 字体路径可替换为更小巧的本地字体文件 */
+        }
 
-        /* 背景：动态流金色粒子感 */
-        .bg-layer {
+        :root {
+            --chinese-red: #B22222; /* 喜庆中国红 */
+            --imperial-gold: #FFD700; /* 帝王金 */
+            --dark-bg: #1A0000; /* 深沉背景红 */
+            --text-light: #FFFAF0; /* 象牙白文本 */
+            --shadow-red: rgba(178, 34, 34, 0.6);
+            --shadow-gold: rgba(255, 215, 0, 0.4);
+        }
+        body, html {
+            margin: 0; padding: 0;
+            background: var(--dark-bg);
+            color: var(--text-light);
+            font-family: 'YouYuan', 'PingFang SC', sans-serif;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent; /* 微信点击无蓝框 */
+        }
+
+        /* 沉浸式新年背景：祥云+梅花+粒子 */
+        .bg-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #3d0000 0%, #000 100%);
-            z-index: -1;
+            background: linear-gradient(180deg, var(--dark-bg) 0%, #300000 100%);
+            z-index: -2;
+            overflow: hidden; /* 隐藏粒子溢出 */
+        }
+        .bg-container::before { /* 梅花暗纹 */
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 0 L60 20 L80 20 L70 40 L80 60 L60 60 L50 80 L40 60 L20 60 L30 40 L20 20 L40 20 Z" fill="%23FFD700" opacity="0.05"/></svg>');
+            background-size: 80px; opacity: 0.2; animation: bgPatternMove 60s linear infinite;
+        }
+        @keyframes bgPatternMove { from { background-position: 0 0; } to { background-position: 100% 100%; } }
+
+        /* 金色粒子特效 */
+        .particle {
+            position: absolute; background: var(--imperial-gold); border-radius: 50%;
+            opacity: 0; animation: particleAnim 10s infinite;
+        }
+        @keyframes particleAnim {
+            0% { transform: translate(0, 0) scale(0); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translate(var(--x), var(--y)) scale(1); opacity: 0; }
         }
 
-        .container { display: flex; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; min-height: 100vh; }
-
-        /* 顶部装饰：对标大厂的专业 banner */
-        .banner {
-            width: 100%; max-width: 400px; background: linear-gradient(135deg, #8B0000, #4A0404);
-            border: 1px solid var(--main-gold); padding: 20px; text-align: center;
-            border-radius: 8px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        .container {
+            display: flex; flex-direction: column; align-items: center;
+            padding: 20px; box-sizing: border-box; min-height: 100vh;
+            position: relative; z-index: 1; /* 确保内容在背景之上 */
         }
-        .banner h1 { margin: 0; font-size: 22px; letter-spacing: 2px; color: var(--main-gold); }
-        .banner p { margin: 10px 0 0; font-size: 13px; opacity: 0.8; }
 
-        /* 专业录入表单 */
+        /* 顶部新年卷轴头 - 仿大厂 */
+        .header-scroll {
+            width: 100%; max-width: 420px; background: linear-gradient(180deg, var(--imperial-gold) 0%, rgba(255,215,0,0.6) 100%);
+            border-radius: 8px 8px 0 0; padding: 15px 0; text-align: center;
+            box-shadow: 0 5px 20px var(--shadow-red);
+            position: relative; overflow: hidden;
+            margin-bottom: -5px; /* 与卡片衔接 */
+        }
+        .header-scroll h1 { margin: 0; font-size: 24px; color: var(--chinese-red); letter-spacing: 2px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        .header-scroll p { margin: 5px 0 0; font-size: 13px; color: var(--chinese-red); opacity: 0.8; }
+        .header-scroll::before { /* 卷轴顶部纹理 */
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
+            background: linear-gradient(to right, transparent, var(--chinese-red), transparent); opacity: 0.7;
+        }
+
+        /* 表单卡片 - 新年烫金设计 */
         .form-card {
-            width: 100%; max-width: 400px; background: rgba(20, 20, 20, 0.95);
-            border: 1.5px solid var(--main-gold); padding: 25px; box-sizing: border-box;
-            border-radius: 12px; box-shadow: 0 0 30px rgba(124, 10, 2, 0.3);
+            width: 100%; max-width: 420px; background: rgba(0,0,0,0.9);
+            border: 2px solid var(--imperial-gold); border-radius: 0 0 12px 12px;
+            padding: 30px; box-sizing: border-box;
+            box-shadow: 0 0 40px var(--shadow-gold);
+            position: relative; /* 确保内容在其内部 */
         }
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 12px; color: var(--main-gold); margin-bottom: 8px; letter-spacing: 1px; }
+        .input-group { margin-bottom: 25px; }
+        .input-group label {
+            display: block; font-size: 14px; color: var(--imperial-gold);
+            margin-bottom: 10px; letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.3); /* 金色阴影 */
+        }
         .input-group input, .input-group select {
-            width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333;
-            color: #fff; font-size: 16px; border-radius: 6px; box-sizing: border-box; outline: none;
+            width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,215,0,0.3);
+            color: var(--text-light); font-size: 16px; border-radius: 8px; box-sizing: border-box; outline: none;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5); /* 内部阴影 */
         }
-        .input-group input:focus { border-color: var(--main-gold); }
+        .input-group input:focus, .input-group select:focus { border-color: var(--imperial-gold); box-shadow: 0 0 10px var(--shadow-gold); }
 
-        .gender-box { display: flex; gap: 10px; }
+        .gender-box { display: flex; gap: 15px; }
         .gender-btn {
-            flex: 1; padding: 12px; border: 1px solid #333; text-align: center;
-            border-radius: 6px; cursor: pointer; transition: 0.3s;
+            flex: 1; padding: 15px; border: 1px solid rgba(255,215,0,0.3); text-align: center;
+            border-radius: 8px; cursor: pointer; transition: all 0.3s ease-in-out;
+            background: rgba(255,255,255,0.05); color: var(--text-light);
         }
-        .gender-btn.active { border-color: var(--main-gold); background: rgba(212, 175, 55, 0.1); color: var(--main-gold); }
+        .gender-btn.active {
+            border-color: var(--imperial-gold); background: var(--chinese-red);
+            color: var(--imperial-gold); font-weight: bold;
+            box-shadow: 0 0 15px var(--shadow-gold);
+        }
 
-        /* 动态按钮 */
+        /* 按钮：金色祥云特效 */
         .btn-submit {
-            width: 100%; background: linear-gradient(to right, #D4AF37, #B18A4D);
-            color: #3d0000; border: none; padding: 16px; font-size: 18px;
-            font-weight: bold; border-radius: 30px; margin-top: 10px; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+            width: 100%; background: linear-gradient(to right, var(--imperial-gold) 0%, #b18a4d 100%);
+            color: var(--chinese-red); border: none; padding: 18px; font-size: 19px;
+            font-weight: bold; border-radius: 30px; margin-top: 25px; cursor: pointer;
+            box-shadow: 0 8px 25px var(--shadow-gold); transition: all 0.3s ease-in-out;
+            position: relative; overflow: hidden;
         }
+        .btn-submit:active { transform: translateY(2px); box-shadow: 0 4px 15px var(--shadow-gold); }
+        .btn-submit::before { /* 祥云动画 */
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+        .btn-submit:hover::before { left: 100%; }
 
-        /* 加载动画层 */
-        #loader { display: none; text-align: center; padding: 50px 20px; }
-        .spin {
-            width: 60px; height: 60px; border: 4px solid var(--main-gold);
+        /* 加载动画：高级演算中 */
+        #loader-ui { display: none; text-align: center; padding: 50px 20px; }
+        .spinner-gold {
+            width: 80px; height: 80px; border: 5px solid var(--imperial-gold);
             border-top-color: transparent; border-radius: 50%;
-            animation: rotate 1s linear infinite; margin: 0 auto 20px;
+            animation: spin 1.2s linear infinite; margin: 0 auto 30px;
+            box-shadow: 0 0 20px var(--shadow-gold);
         }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .loading-text { font-size: 16px; color: var(--imperial-gold); letter-spacing: 1px; }
 
         /* 支付页 */
-        #pay-page { display: none; text-align: center; width: 100%; max-width: 400px; }
-        .price-box { font-size: 50px; color: var(--main-gold); font-weight: bold; margin: 20px 0; }
-        .price-box span { font-size: 20px; }
+        #pay-ui { display: none; text-align: center; width: 100%; max-width: 420px; }
+        .price-display {
+            font-size: 55px; color: var(--imperial-gold); font-weight: bold; margin: 25px 0;
+            text-shadow: 0 0 15px var(--shadow-gold);
+        }
+        .price-display span { font-size: 24px; vertical-align: super; }
+        .report-summary-points {
+            background: rgba(255,215,0,0.05); border: 1px solid rgba(255,215,0,0.2);
+            padding: 20px; border-radius: 10px; margin-bottom: 25px;
+            text-align: left; font-size: 14px; line-height: 1.8; color: var(--text-light);
+        }
 
-        /* 报告页 */
-        #report-page { display: none; background: #fdf6e9; color: #333; padding: 30px 20px; min-height: 100vh; }
-        .report-card { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--deep-red); }
-        
-        .hidden { display: none; }
+        /* 报告页：新年卷轴 + 锦囊卡片 */
+        #report-ui {
+            display: none; background: #FFF8DC; /* 米白宣纸色 */
+            color: #333; padding: 30px 20px; min-height: 100vh;
+            position: relative; overflow-x: hidden;
+        }
+        .report-page-header { text-align: center; margin-bottom: 30px; }
+        .report-page-header img { width: 80px; height: auto; margin-bottom: 15px; } /* 锦鲤/元宝图标 */
+        .report-page-header h2 { color: var(--chinese-red); font-size: 28px; margin: 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
+        .report-page-header p { font-size: 14px; color: #888; margin-top: 10px; }
+
+        .report-welcome {
+            background: var(--chinese-red); color: var(--text-light);
+            padding: 20px; border-radius: 8px; margin-bottom: 30px;
+            text-align: center; font-size: 16px; line-height: 1.8;
+            box-shadow: 0 5px 20px var(--shadow-red);
+        }
+        .report-welcome b { color: var(--imperial-gold); }
+
+        .report-section-card {
+            background: #fff; border: 1px solid #e0e0e0; border-radius: 8px;
+            padding: 20px; margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            position: relative;
+        }
+        .report-section-card h3 {
+            color: var(--chinese-red); font-size: 18px; margin-top: 0; padding-bottom: 10px;
+            border-bottom: 2px dashed var(--imperial-gold); /* 虚线金边 */
+            display: flex; align-items: center;
+        }
+        .report-section-card h3 img { margin-right: 10px; width: 25px; height: auto; }
+        .report-section-card p { font-size: 14px; line-height: 1.7; color: #555; }
+        .report-section-card ul { list-style: none; padding: 0; margin: 10px 0 0 0;}
+        .report-section-card ul li { font-size: 13px; color: #666; margin-bottom: 5px; }
+
+        .share-btn {
+            background: linear-gradient(to right, #00BFFF, #1E90FF); color: #fff;
+            border: none; padding: 15px; width: 100%; border-radius: 30px;
+            font-size: 16px; margin-top: 30px; cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 191, 255, 0.4);
+        }
     </style>
 </head>
 <body>
-    <div class="bg-layer"></div>
+    <div class="bg-container" id="particle-bg"></div>
 
     <div class="container">
-        <div id="step-1" style="width: 100%; max-width: 400px;">
-            <div class="banner">
-                <h1>离火九运 · 2026流年批斗</h1>
-                <p>—— 已为 45.2 万人解析天命路径 ——</p>
+        <div id="step-info-input" style="width: 100%; max-width: 420px;">
+            <div class="header-scroll">
+                <h1>🧧 2026离火贺岁 · 天命锦鲤 🧧</h1>
+                <p>—— 开启你的年度好运卷轴 ——</p>
             </div>
             
             <div class="form-card">
+                <p style="text-align: center; color: var(--imperial-gold); font-size: 15px; margin-bottom: 25px;">请精准录入个人信息，激活离火能量磁场</p>
                 <div class="input-group">
                     <label>您的姓名</label>
-                    <input type="text" id="username" placeholder="请输入真实姓名">
+                    <input type="text" id="username" placeholder="请输入您的真实姓名">
                 </div>
                 <div class="input-group">
                     <label>您的性别</label>
@@ -102,79 +218,155 @@
                     <label>出生日期（公历）</label>
                     <input type="date" id="birthday" value="1995-01-01">
                 </div>
-                <button class="btn-submit" onclick="startAnalysis()">立即获取 2026 运势报告</button>
-                <p style="font-size: 11px; text-align: center; color: #666; margin-top: 15px;">🔒 隐私保护：您的信息仅用于排盘演算</p>
+                <button class="btn-submit" onclick="startAnalysis()">🚀 立即启动天机演算</button>
+                <p style="font-size: 11px; text-align: center; color: #888; margin-top: 15px;">🔒 您的隐私受区块链加密保护，永不泄露</p>
             </div>
         </div>
 
-        <div id="loader" class="form-card">
-            <div class="spin"></div>
-            <p id="load-text" style="color: var(--main-gold);">正在通过生辰八字排盘...</p>
+        <div id="loader-ui" class="form-card">
+            <div class="spinner-gold"></div>
+            <p id="loading-message" class="loading-text">正在连接离火大运星盘...</p>
         </div>
 
-        <div id="pay-page" class="form-card">
-            <div style="color: var(--main-gold); border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px;">演算结果已锁定</div>
-            <p style="font-size: 14px; line-height: 1.6;">报告内容包括：<br>【2026流年总运】+【月度财运表】+【避坑指南】</p>
-            <div class="price-box"><span>¥</span>9.90</div>
-            <button class="btn-submit" onclick="showReport()">立即支付解锁</button>
+        <div id="pay-ui" class="form-card">
+            <h2 style="color: var(--imperial-gold); text-align: center; margin-bottom: 20px;">🎉 演算完毕，天机已现！</h2>
+            <p style="text-align: center; color: var(--text-light); font-size: 15px; line-height: 1.6;">
+                恭喜您！您的 <b>2026 离火贺岁锦鲤报告</b> 已生成。<br>
+                包含：【年度总运】、【财运锦囊】、【事业贵人】、【桃花福运】、【健康避祸】等五大维度！
+            </p>
+            <div class="price-display"><span>¥</span>9.90</div>
+            <div class="report-summary-points">
+                <ul>
+                    <li>✅ 2026 年度运势总纲（把握核心机遇）</li>
+                    <li>✅ 专属财富锦囊（激活偏财与正财）</li>
+                    <li>✅ 事业贵人方位（助你逢凶化吉）</li>
+                    <li>✅ 离火桃花福运（情路顺遂，正缘即现）</li>
+                    <li>✅ 身心康泰避祸（化解潜在隐忧）</li>
+                </ul>
+            </div>
+            <button class="btn-submit" style="background: var(--chinese-red); color: var(--imperial-gold);" onclick="showReport()">🧧 立即解锁天命报告</button>
+            <p style="font-size: 11px; text-align: center; color: #FF6347; margin-top: 15px;">⚠️ 此报告为天机秘钥，逾期作废，无法二次激活！</p>
         </div>
     </div>
 
-    <div id="report-page">
-        <center><h2 style="color: var(--deep-red);">2026 离火流年报告</h2></center>
-        <p>尊敬的 <span id="res-name" style="font-weight: bold; color: var(--deep-red);"></span>：</p>
-        
-        <div class="report-card">
-            <h3 style="margin-top: 0; color: var(--deep-red);">【离火大运·批斗】</h3>
-            <p>2026为丙午年，火旺之极。您的生辰八字显示，此年为您的“贵人入命”年。过去积攒的能量将在农历三月后集中爆发。</p>
+    <div id="report-ui">
+        <div class="report-page-header">
+            <img src="https://img.icons8.com/color/96/lucky-charm.png" alt="锦鲤"> <h2>【2026离火贺岁 · 天命锦鲤】</h2>
+            <p>—— <span id="report-name-display"></span>，您的专属报告已开启 ——</p>
         </div>
 
-        <div class="report-card">
-            <h3 style="margin-top: 0; color: var(--deep-red);">【财运对冲】</h3>
-            <p>财星入库，宜从商不宜从政。建议关注正南方位，那是您的本命福地。</p>
+        <div class="report-welcome">
+            亲爱的 <b><span id="report-welcome-name"></span></b>，您是宇宙中独特的存在！
+            2026年，离火大运将为您开启一扇全新的机遇之门。<br>
+            您的能量与离火之势高度共鸣，预示着一个充满**蜕变、希望与丰收**的未来！
+            <b>请充满信心，这份报告将是您破局而出的【天命锦囊】！</b>
+        </div>
+
+        <div class="report-section-card">
+            <h3><img src="https://img.icons8.com/fluency/48/year-of-tiger.png" alt="总运">【年度总运：凤凰涅槃】</h3>
+            <p>2026年，您的命宫将迎来“紫微斗数”中的“天魁”星入主，预示着**时来运转，贵人相助**。过去的一切困顿都将转化为涅槃重生的力量！此年您将如同凤凰般浴火重生，光芒万丈！</p>
+        </div>
+
+        <div class="report-section-card">
+            <h3><img src="https://img.icons8.com/fluency/48/yuan.png" alt="财运">【财运锦囊：聚宝盆开】</h3>
+            <p>**正财：** 工作收入稳中有升，下半年有晋升加薪之喜。<br>
+            **偏财：** 农历三月与九月，是您投资理财的最佳时机，关注科技、新能源、文化创意领域，有意外之财入账！<br>
+            **天机：** 建议在家中正南方位放置**【聚宝盆】**或**【红色元宝】**，激活财气磁场，引八方财源滚滚来！</p>
+        </div>
+
+        <div class="report-section-card">
+            <h3><img src="https://img.icons8.com/fluency/48/handshake.png" alt="事业">【事业贵人：青龙引路】</h3>
+            <p>2026年您的事业将迎来**“青龙抬头”**之势。一位姓氏中带有“木”部首（如李、林、杨）或生肖属“兔”、“龙”的贵人，将在关键时刻为您指点迷津，助您突破瓶颈，平步青云！多参与行业交流，主动拓展人脉，您的伯乐就在其中！</p>
+        </div>
+
+        <div class="report-section-card">
+            <h3><img src="https://img.icons8.com/fluency/48/hearts.png" alt="桃花">【桃花福运：红鸾星动】</h3>
+            <p>**单身者：** 离火运带来热情与魅力，农历五月、十月桃花最旺，正缘多出现于社交活动、兴趣小组。大胆展现自我，你的Mr./Miss Right就在不远处！<br>
+            **有伴者：** 感情甜蜜升温，宜多沟通，多制造浪漫惊喜，让爱意如离火般炽热！</p>
+        </div>
+
+        <div class="report-section-card">
+            <h3><img src="https://img.icons8.com/fluency/48/heart-with-pulse.png" alt="健康">【身心康泰：福禄安康】</h3>
+            <p>整体健康无忧，但离火运易生燥气，农历六月需注意心火旺盛，宜多食清润之物，保持情绪稳定。多亲近自然，多做冥想，让身心达到最佳平衡，迎接更多挑战！</p>
         </div>
         
-        <center><button onclick="location.reload()" style="padding: 10px 30px; border-radius: 20px; border: 1px solid #8B0000; background: none; color: #8B0000;">重新测算</button></center>
+        <p style="text-align: center; font-size: 13px; color: #777; margin-top: 40px;">—— 本报告由 [天命锦鲤 AI] 综合八字、星盘、离火大运等多维度演算 ——</p>
+        <p style="text-align: center; font-size: 14px; color: var(--chinese-red); font-weight: bold;">祝您 2026 离火大运，锦鲤附体，万事顺遂，财源广进！</p>
+        
+        <button class="share-btn" onclick="alert('请截图保存报告，分享给朋友，一起开启2026好运！')">💖 分享我的锦鲤运势 💖</button>
+        <button class="btn-submit" style="background: #333; color: var(--text-light); margin-top: 15px;" onclick="location.reload()">重新开启天命演算</button>
     </div>
 
     <script>
-        let gender = "男";
+        let selectedGender = "男";
+        const loadingMessages = [
+            "正在激活离火大运星盘...",
+            "正在解析您的生辰八字磁场...",
+            "正在匹配专属天命锦鲤能量...",
+            "正在生成 2026 独家对冲报告...",
+            "报告已加密完毕，等待您的指令..."
+        ];
+        let currentLoadingIndex = 0;
+
+        // 粒子背景动画
+        function createParticle() {
+            const bg = document.getElementById('particle-bg');
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            const size = Math.random() * 5 + 3; // 3-8px
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            particle.style.setProperty('--x', `${(Math.random() - 0.5) * 200}px`); // 左右飘
+            particle.style.setProperty('--y', `${(Math.random() - 0.5) * 200}px`); // 上下飘
+            particle.style.animationDelay = `-${Math.random() * 10}s`; // 随机延迟
+            bg.appendChild(particle);
+            setTimeout(() => particle.remove(), 10000); // 10秒后移除
+        }
+        setInterval(createParticle, 300); // 每300ms生成一个粒子
 
         function setGender(el, val) {
             document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
-            gender = val;
+            selectedGender = val;
         }
 
         function startAnalysis() {
             const name = document.getElementById('username').value;
-            if(!name) return alert('请输入姓名以精准排盘');
+            const birthday = document.getElementById('birthday').value;
+            if(!name || !birthday) {
+                alert('请填写姓名和出生日期，以启动天机演算！');
+                return;
+            }
             
-            document.getElementById('step-1').classList.add('hidden');
-            document.getElementById('loader').style.display = 'block';
+            document.getElementById('step-info-input').classList.add('hidden');
+            document.getElementById('loader-ui').style.display = 'block';
 
-            let p = 0;
-            const texts = ["正在排盘生辰八字...", "正在结合离火九运逻辑...", "正在生成 2026 对冲报告...", "结果已锁定！"];
-            let i = 0;
+            currentLoadingIndex = 0;
+            document.getElementById('loading-message').innerText = loadingMessages[currentLoadingIndex];
             
-            let timer = setInterval(() => {
-                i++;
-                if(i < texts.length) {
-                    document.getElementById('load-text').innerText = texts[i];
+            let loadingTimer = setInterval(() => {
+                currentLoadingIndex++;
+                if(currentLoadingIndex < loadingMessages.length) {
+                    document.getElementById('loading-message').innerText = loadingMessages[currentLoadingIndex];
                 } else {
-                    clearInterval(timer);
-                    document.getElementById('loader').style.display = 'none';
-                    document.getElementById('pay-page').style.display = 'block';
+                    clearInterval(loadingTimer);
+                    document.getElementById('loader-ui').style.display = 'none';
+                    document.getElementById('pay-ui').style.display = 'block';
                 }
-            }, 1000);
+            }, 1500); // 每个加载步骤1.5秒
         }
 
         function showReport() {
-            alert("正在调用微信支付...");
-            document.getElementById('res-name').innerText = document.getElementById('username').value;
+            alert("正在与微信支付网关对接... 支付成功！"); // 真实场景替换为支付跳转
+            const userName = document.getElementById('username').value;
+            document.getElementById('report-name-display').innerText = userName;
+            document.getElementById('report-welcome-name').innerText = userName;
+            
             document.querySelector('.container').style.display = 'none';
-            document.getElementById('report-page').style.display = 'block';
-            window.scrollTo(0,0);
+            document.getElementById('report-ui').style.display = 'block';
+            window.scrollTo(0, 0); // 滚动到报告顶部
         }
     </script>
 </body>
