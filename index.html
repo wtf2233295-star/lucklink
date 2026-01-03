@@ -2,156 +2,116 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>2026 离火天机 | 好运接龙</title>
     <style>
-        :root { --gold: #D4AF37; --red: #7C0A02; --black: #0D0D0D; }
-        body { background: var(--black); color: var(--gold); font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; overflow-x: hidden; }
+        @font-face {
+            font-family: 'YouYuan'; /* 优美古风字体 */
+            src: url('https://raw.githubusercontent.com/google/fonts/main/ofl/notosansjp/NotoSansJP-Regular.otf') format('opentype');
+            /* 字体路径可替换为更小巧的本地字体文件 */
+        }
+        :root {
+            --red-bg: #4A0404; /* 深邃玄红 */
+            --gold-accent: #D4AF37; /* 帝王金 */
+            --dark-bg: #0A0A0A; /* 墨玉黑 */
+            --light-text: #F0E6D6; /* 米白文本 */
+            --fade-gold: rgba(212, 175, 55, 0.4); /* 淡金边框 */
+        }
+        body {
+            background: var(--dark-bg);
+            color: var(--light-text);
+            font-family: 'YouYuan', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent; /* 微信点击无蓝框 */
+        }
+
+        /* 动态祥云瑞兽背景 */
+        .bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: radial-gradient(circle at center, var(--red-bg) 0%, var(--dark-bg) 100%); }
+        .bg-pattern-img { position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.1; z-index: -1; pointer-events: none; }
+        .bg-pattern-img.clouds { background: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 60 C 20 50, 40 70, 60 60 S 80 50, 100 60 L 100 100 L 0 100 Z" fill="%23d4af37" opacity="0.1"/></svg>') repeat; animation: cloudMove 120s linear infinite; transform: scaleX(-1); }
+        .bg-pattern-img.dragon { background: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M20 40 C 30 20, 70 20, 80 40 S 90 60, 70 80 S 30 80, 20 60 L 20 40 Z" fill="%23d4af37" opacity="0.05"/></svg>') repeat; animation: cloudMove 180s linear infinite; }
+        @keyframes cloudMove { from { background-position: 0 0; } to { background-position: 100% 0; } }
+
+        .app-container { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
         
-        /* 奢华新年渐变背景 */
-        .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #3d0000 0%, #000 100%); z-index: -1; }
-        .bg-pattern { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png'); opacity: 0.2; z-index: -1; }
+        /* 卡片边框与光泽 */
+        .main-card { background: rgba(0,0,0,0.85); border: 1.5px solid var(--fade-gold); border-radius: 4px; padding: 35px 25px; width: 100%; max-width: 380px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.7); overflow: hidden; }
+        .main-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 70%); animation: cardShine 3s infinite alternate; }
+        @keyframes cardShine { from { transform: rotate(0deg) translate(-25%, -25%); } to { transform: rotate(360deg) translate(25%, 25%); } }
 
-        .app-container { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; box-sizing: border-box; }
+        .step-tag { font-size: 0.7rem; letter-spacing: 5px; color: var(--gold-accent); margin-bottom: 25px; text-transform: uppercase; font-weight: bold; }
+        .question-text { font-size: 1.35rem; line-height: 1.7; color: var(--light-text); font-weight: bold; margin-bottom: 40px; text-shadow: 0 2px 5px rgba(0,0,0,0.4); min-height: 80px; display: flex; align-items: center; justify-content: center; text-align: center;}
+
+        /* 选项按钮 */
+        .opt-btn { background: linear-gradient(135deg, #1A1A1A 0%, #000000 100%); border: 1px solid var(--fade-gold); color: var(--gold-accent); padding: 18px 25px; width: 100%; margin: 12px 0; border-radius: 5px; font-size: 1rem; cursor: pointer; transition: all 0.3s ease-in-out; position: relative; overflow: hidden; text-align: left; }
+        .opt-btn:hover { background: var(--dark-bg); box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
+        .opt-btn:active { background: var(--gold-accent); color: var(--red-bg); transform: scale(0.98); box-shadow: 0 0 20px var(--gold-accent); }
+        .opt-btn::after { content: '→'; position: absolute; right: 20px; color: rgba(212, 175, 55, 0.6); font-weight: bold; }
+
+        /* 输入框和选择框 */
+        input[type="text"], select { background: rgba(0,0,0,0.4); border: 1px solid var(--fade-gold); color: var(--light-text); padding: 15px; margin: 20px 0; width: 100%; border-radius: 5px; font-size: 1.1rem; text-align: center; }
+        select { appearance: none; -webkit-appearance: none; } /* 隐藏默认箭头 */
+
+        /* 报告样式 */
+        .report-section { text-align: left; color: var(--light-text); line-height: 1.8; }
+        .report-title { color: var(--gold-accent); font-size: 1.6rem; text-align: center; margin-bottom: 25px; border-bottom: 2px solid var(--fade-gold); padding-bottom: 10px; font-weight: bold; }
+        .report-summary { text-align: center; margin-bottom: 25px; font-size: 1.1rem; line-height: 1.6; color: var(--light-text); }
         
-        /* 故宫红金卡片设计 */
-        .main-card { background: rgba(15, 15, 15, 0.95); border: 1.5px solid var(--gold); border-radius: 2px; padding: 40px 25px; width: 100%; max-width: 400px; position: relative; box-shadow: 0 15px 50px rgba(0,0,0,0.8); }
-        .card-corner { position: absolute; width: 40px; height: 40px; border: 2px solid var(--gold); }
-        .top-left { top: -5px; left: -5px; border-right: none; border-bottom: none; }
-        .bottom-right { bottom: -5px; right: -5px; border-left: none; border-top: none; }
-
-        .step-tag { font-size: 0.65rem; letter-spacing: 4px; color: #888; margin-bottom: 20px; text-transform: uppercase; }
-        .question-text { font-size: 1.3rem; line-height: 1.6; color: #fff; font-weight: 600; margin-bottom: 35px; min-height: 80px; }
-
-        /* 交互式选项 */
-        .opt-btn { background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); border: 1px solid rgba(212, 175, 55, 0.4); color: var(--gold); padding: 18px; width: 100%; margin: 12px 0; border-radius: 4px; font-size: 0.95rem; cursor: pointer; transition: 0.3s; text-align: left; padding-left: 25px; position: relative; }
-        .opt-btn:active { background: var(--gold); color: var(--red); transform: scale(0.98); }
-        .opt-btn::after { content: '→'; position: absolute; right: 20px; opacity: 0.5; }
-
-        /* 报告深度样式 */
-        .report-section { text-align: left; color: #ddd; line-height: 1.8; }
-        .report-title { color: var(--gold); font-size: 1.5rem; text-align: center; margin-bottom: 20px; border-bottom: 1px double var(--gold); padding-bottom: 10px; }
-        .dimension-box { background: rgba(124, 10, 2, 0.15); border: 1px solid var(--gold); padding: 15px; margin: 15px 0; border-radius: 4px; }
-        .dim-header { color: var(--gold); font-weight: bold; margin-bottom: 8px; display: flex; justify-content: space-between; }
+        .dimension-card { background: rgba(212, 175, 55, 0.08); border: 1px solid var(--fade-gold); padding: 18px; margin-bottom: 18px; border-radius: 5px; position: relative; }
+        .dim-header { color: var(--gold-accent); font-weight: bold; font-size: 1.15rem; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .dim-score { background: var(--gold-accent); color: var(--dark-bg); padding: 5px 10px; border-radius: 3px; font-size: 0.9rem; font-weight: bold; }
+        .dim-content { font-size: 0.9rem; color: #ccc; }
         
+        /* 月度运势图表 */
+        .monthly-chart { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 5px; margin-top: 20px; }
+        .chart-legend { display: flex; justify-content: space-around; font-size: 0.8rem; color: var(--gold-accent); margin-bottom: 10px; }
+        .chart-bar-container { display: flex; align-items: flex-end; height: 100px; border-bottom: 1px solid var(--fade-gold); }
+        .chart-bar { flex-grow: 1; margin: 0 2px; background: linear-gradient(to top, var(--gold-accent), rgba(212, 175, 55, 0.4)); transition: height 0.5s ease-out; }
+
         .hidden { display: none; }
-        .fade-in { animation: fadeIn 0.6s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.8s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-<div class="bg-overlay"></div>
-<div class="bg-pattern"></div>
+<div class="bg-canvas"></div>
+<div class="bg-pattern-img clouds"></div>
+<div class="bg-pattern-img dragon"></div>
 
 <div class="app-container">
-    <div id="quiz-ui" class="main-card fade-in">
-        <div class="card-corner top-left"></div>
-        <div class="card-corner bottom-right"></div>
-        <div class="step-tag" id="q-step">Sequence 01/10</div>
+    <div id="quiz-flow" class="main-card fade-in">
+        <div class="step-tag" id="q-step">天机序章 01/10</div>
         <div class="question-text" id="q-text">当2026离火之气升腾，你是否感到思维中常有闪现的灵感却难以捕捉？</div>
         <div id="options-area">
-            <button class="opt-btn" onclick="handleSelect()">是的，感到能量正在觉醒</button>
-            <button class="opt-btn" onclick="handleSelect()">暂时没有，但我渴望链接</button>
+            <button class="opt-btn" onclick="processAnswer(this)">是的，能量正在觉醒</button>
+            <button class="opt-btn" onclick="processAnswer(this)">暂时没有，但我渴望链接</button>
         </div>
     </div>
 
-    <div id="info-ui" class="main-card hidden fade-in">
-        <div class="report-title">锁定天机档案</div>
-        <p style="font-size: 0.9rem; text-align: center; color: #aaa;">系统已根据您的心理波段匹配 2026 对冲路径，请输入信息完成最后激活。</p>
-        <input type="text" id="username" placeholder="请输入您的真名" style="width:100%; background:none; border:none; border-bottom:1px solid var(--gold); color:#fff; padding:15px; margin:20px 0; text-align:center; font-size:1.1rem; outline:none;">
-        <button class="opt-btn" style="background:var(--gold); color:var(--red); font-weight:bold; text-align:center; padding-left:0;" onclick="goPay()">生成深度天机报告</button>
+    <div id="info-gather-ui" class="main-card hidden fade-in">
+        <div class="report-title">天机锁定·能量聚汇</div>
+        <p style="text-align:center; color:#ccc; font-size:0.9rem;">为确保报告精准无误，请赐予您的真实信息，锁定您的专属离火磁场。</p>
+        <input type="text" id="user-name" placeholder="请输入您的真名（必填）">
+        <select id="user-focus">
+            <option value="财富">🌟 财富运势：离火聚财 · 步步高升</option>
+            <option value="事业">🚀 事业晋升：贵人相助 · 破局成王</option>
+            <option value="情感">💖 情感姻缘：红鸾星动 · 佳偶天成</option>
+            <option value="健康">🌿 身心康泰：平安顺遂 · 能量充沛</option>
+        </select>
+        <button class="opt-btn" style="background:var(--gold-accent); color:var(--red-bg); text-align:center; padding-left:0; margin-top:30px;" onclick="validateAndProceed()">生成《2026离火·四维天机报告》</button>
     </div>
 
-    <div id="pay-ui" class="main-card hidden fade-in">
-        <div class="report-title">能量交付确认</div>
-        <div style="text-align:center; margin:25px 0;">
-            <p style="color:#888; font-size:0.85rem;">本次接龙已为您生成</p>
-            <h3 style="color:#fff; margin:10px 0;">《2026离火·四维深度档案》</h3>
-            <div style="font-size:2.5rem; color:var(--gold); font-weight:bold; margin:20px 0;">¥ 9.90</div>
+    <div id="payment-ui" class="main-card hidden fade-in">
+        <div class="report-title">天机报告 · 能量交付</div>
+        <div style="text-align:center; margin:30px 0;">
+            <p style="color:#aaa; font-size:0.9rem;">您的专属报告已运算完毕！</p>
+            <h3 style="color:var(--light-text); margin:15px 0;">《2026离火破局档案》</h3>
+            <div style="font-size:2.8rem; color:var(--gold-accent); font-weight:bold; margin:25px 0;">¥ 9.90</div>
+            <p style="color:#ccc; font-size:0.85rem;">本次报告将为您深度拆解四大能量维度，助您在 2026 逆流而上！</p>
         </div>
-        <ul style="font-size:0.8rem; color:#aaa; padding-left:20px;">
-            <li>财富波段：月度盈亏临界点分析</li>
-            <li>贵人图谱：谁是你的2026天命助推者</li>
-            <li>避灾对冲：哪个月份必须“静守”</li>
-        </ul>
-        <button class="opt-btn" style="background:var(--gold); color:var(--red); font-weight:bold; text-align:center; padding-left:0;" onclick="alert('跳转支付成功（请在此对接你的支付码）'); showFinal();">点击支付 · 开启2026</button>
-    </div>
-
-    <div id="report-ui" class="main-card hidden fade-in" style="max-height: 85vh; overflow-y: auto;">
-        <div class="report-title">2026 天机全书</div>
-        <div class="report-section">
-            <p>尊敬的 <span id="res-name" style="color:var(--gold); font-weight:bold;"></span> 居士：</p>
-            <p>您的灵魂频率已与 2026 离火大运完成深度对冲。以下是系统为您演算的深度轨迹：</p>
-            
-            <div class="dimension-box">
-                <div class="dim-header"><span>财富潜力 · 对冲位</span><span>94分</span></div>
-                <p style="font-size:0.85rem; margin:0;">2026为离火爆发年，您的财星位于“朱雀位”。3月与10月是关键节点。切记：宜动不宜静，利于跨行增益。</p>
-            </div>
-
-            <div class="dimension-box">
-                <div class="dim-header"><span>贵人磁场 · 吸引力</span><span>极强</span></div>
-                <p style="font-size:0.85rem; margin:0;">您身边将出现一位姓氏带“木”或从事文化产业的贵人。5月前后的社交场合是您的关键场域。</p>
-            </div>
-
-            <div class="dimension-box">
-                <div class="dim-header"><span>健康避灾 · 对冲令</span><span>需关注</span></div>
-                <p style="font-size:0.85rem; margin:0;">农历六月土气过重，火土相生却易燥。此月建议减少远行，居家静修可躲避不必要的能量耗散。</p>
-            </div>
-
-            <div class="dimension-box">
-                <div class="dim-header"><span>开运秘钥</span><span>[离火令]</span></div>
-                <p style="font-size:0.85rem; margin:0;">建议身着红色、紫色系配饰。办公室正南方放置一盏长明灯，可助您在2026年破局而出。</p>
-            </div>
-
-            <p style="font-size:0.75rem; color:#666; text-align:center; margin-top:30px;">—— 系统已记录此频率，祝您旗开得胜 ——</p>
-        </div>
-        <button class="opt-btn" onclick="location.reload()" style="text-align:center; padding-left:0;">重新演算</button>
-    </div>
-</div>
-
-<script>
-    const questions = [
-        {q: "当2026离火之气升腾，你是否感到思维中常有闪现的灵感却难以捕捉？", a: ["是的，感到能量正在觉醒", "暂时没有，但我渴望链接"]},
-        {q: "回首过去三年，你觉得自己是在积累力量，还是在被生活消耗？", a: ["积累力量，等待爆发", "深感疲惫，寻求出口"]},
-        {q: "面对未知的 2026 年，你最希望在哪个维度实现“逆风翻盘”？", a: ["财富与阶层跃迁", "情感与灵魂共鸣"]},
-        {q: "当一个巨大的机会伴随着一定的风险出现，你的第一本能是？", a: ["精准对冲，果断入场", "审慎观察，等待安全感"]},
-        {q: "你认为目前的社交圈层，对你未来的助益程度如何？", a: ["亟需重组，寻找贵人", "稳定支撑，向上兼容"]},
-        {q: "如果告诉你 2026 年有三个月是你的“至暗时刻”，你是否有信心通过指令对冲？", a: ["我有坚定的执行力", "我需要指引与护佑"]},
-        {q: "在财富增值的路径上，你更偏向于“快鱼吃慢鱼”还是“深耕细作”？", a: ["快速收割机会", "持久稳健布局"]},
-        {q: "你是否有过在某个瞬间，突然感觉到未来某件事一定会发生的“预知感”？", a: ["经常有，灵觉敏锐", "很少，我更相信逻辑"]},
-        {q: "面对离火运带来的变革，你是否愿意为了“大吉”而放弃当下的舒适圈？", a: ["愿意，破釜沉舟", "犹豫，寻求平衡"]},
-        {q: "最后一步：你是否愿意承接这份为您量身定制的 2026 天机指令？", a: ["准备就绪，开启接龙", "心怀敬畏，申请接入"]}
-    ];
-
-    let currentStep = 0;
-
-    function handleSelect() {
-        currentStep++;
-        if(currentStep < questions.length) {
-            document.getElementById('q-step').innerText = `Sequence ${String(currentStep+1).padStart(2,'0')}/10`;
-            document.getElementById('q-text').innerText = questions[currentStep].q;
-            const buttons = document.querySelectorAll('#options-area .opt-btn');
-            buttons[0].innerText = questions[currentStep].a[0];
-            buttons[1].innerText = questions[currentStep].a[1];
-        } else {
-            document.getElementById('quiz-ui').classList.add('hidden');
-            document.getElementById('info-ui').classList.remove('hidden');
-        }
-    }
-
-    function goPay() {
-        const name = document.getElementById('username').value;
-        if(!name) { alert('请输入真名锁定磁场'); return; }
-        document.getElementById('info-ui').classList.add('hidden');
-        document.getElementById('pay-ui').classList.remove('hidden');
-    }
-
-    function showFinal() {
-        document.getElementById('res-name').innerText = document.getElementById('username').value;
-        document.getElementById('pay-ui').classList.add('hidden');
-        document.getElementById('report-ui').classList.remove('hidden');
-    }
-</script>
-</body>
-</html>
+        <button class="opt-btn" style="background:var(--gold-accent); color:var(--red-bg); text-align:center; padding-left:0;" onclick="alert('请在此处对接您的微信收款码或支付链接！支付成功后即可查看报告。'); displayFinalReport();">点击支付 · 激活天机</button>
+        <p style="font-size:0.7rem; color:#FF4D4D; text-align:center; margin-top:20px;">⚠️ 天机不可泄露，若关闭此
