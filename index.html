@@ -3,262 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>2026 天官赐福 · 开启鸿运</title>
+    <title>2026马年·好运接龙 | 官方开运站</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&display=swap');
-
         :root {
-            --cinnabar: #B72626; /* 朱砂红 - 故宫墙色 */
-            --dark-red: #580808;
-            --luxury-gold: #D4AF37; /* 香槟金 */
-            --shimmer: #F9E5BC;
-            --void: #1a0505;
+            --palace-red: #A31E22; /* 故宫红 */
+            --tang-gold: #D4AF37;  /* 鎏金 */
+            --jade-green: #006847; /* 翡翠绿点缀 */
+            --shimmer: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
         }
 
         body, html {
-            margin: 0; padding: 0; height: 100%;
-            background-color: var(--void);
-            font-family: 'Noto Serif SC', serif;
-            color: var(--shimmer);
-            overflow: hidden; /* 禁止滚动，全屏沉浸 */
+            margin: 0; padding: 0;
+            background-color: var(--palace-red);
+            font-family: 'PingFang SC', 'Noto Serif SC', serif;
+            color: #F8F4E6;
+            overflow-x: hidden;
         }
 
-        /* --- 顶级背景：流动的云锦 --- */
-        .master-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 20%, var(--cinnabar) 0%, var(--dark-red) 80%, #000 100%);
-            z-index: -3;
-        }
-        
-        /* 动态云彩纹理 - SVG 动画 */
-        .clouds-layer {
-            position: absolute; width: 200%; height: 100%; top: 0; left: -50%;
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 50 Q 50 20 70 50 T 110 50' stroke='%23D4AF37' stroke-width='0.5' fill='none' opacity='0.2'/%3E%3Cpath d='M0 70 Q 40 40 80 70 T 120 70' stroke='%23D4AF37' stroke-width='0.5' fill='none' opacity='0.1'/%3E%3C/svg%3E");
-            animation: cloudFloat 60s linear infinite;
-            z-index: -2;
-        }
-        @keyframes cloudFloat { from { transform: translateX(0); } to { transform: translateX(50px); } }
-
-        /* 金粉粒子 */
-        .gold-dust {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
-            opacity: 0.3; pointer-events: none; z-index: -1;
+        /* 顶部马到成功背景：动态祥云 */
+        .header-bg {
+            width: 100%; height: 280px;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1610450949065-1f2842426a31?auto=format&fit=crop&q=80&w=800'); /* 此处替换为顶级唐马图案 */
+            background-size: cover; background-position: center;
+            position: relative; border-bottom: 3px solid var(--tang-gold);
         }
 
-        /* --- 主容器 --- */
-        .app-container {
-            width: 100%; height: 100%; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; position: relative;
+        /* 标题：鎏金立体感 */
+        .title-area {
+            position: absolute; bottom: 20px; width: 100%; text-align: center;
         }
-
-        /* --- 1. 欢迎页 --- */
-        .hero-section { text-align: center; animation: zoomIn 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .logo-seal {
-            width: 120px; height: 120px; border: 2px solid var(--luxury-gold);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 30px; background: rgba(88, 8, 8, 0.6);
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
-            position: relative;
-        }
-        .logo-seal::after {
-            content: '福'; font-size: 70px; font-weight: 900; color: var(--luxury-gold);
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-        
         .main-title {
-            font-size: 32px; letter-spacing: 8px; font-weight: 900;
-            background: linear-gradient(to bottom, #FFD700, #F0E68C);
-            -webkit-background-clip: text; color: transparent;
-            margin-bottom: 10px;
+            font-size: 36px; font-weight: 900; letter-spacing: 5px;
+            color: var(--tang-gold); text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+            margin: 0;
         }
-        .sub-title { font-size: 14px; opacity: 0.8; letter-spacing: 3px; color: #E6C288; }
 
-        .start-btn {
-            margin-top: 50px; background: linear-gradient(90deg, #D4AF37, #F9E5BC, #D4AF37);
-            background-size: 200% auto;
-            color: var(--dark-red); padding: 18px 60px; border-radius: 50px;
-            font-size: 18px; font-weight: bold; border: none; letter-spacing: 2px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); cursor: pointer;
-            animation: shine 3s linear infinite;
+        /* 损失厌恶问题卡片 */
+        .quiz-container {
+            padding: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10 L90 10 L90 90 L10 90 Z' fill='none' stroke='%23D4AF37' stroke-width='0.5' opacity='0.2'/%3E%3C/svg%3E");
         }
-        @keyframes shine { to { background-position: 200% center; } }
 
-        /* --- 2. 提问页 (损失厌恶心理学) --- */
-        .question-card {
-            display: none; background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            width: 85%; max-width: 400px; padding: 40px 30px; border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            text-align: center;
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--tang-gold);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
         }
-        
-        .q-progress { color: var(--luxury-gold); font-size: 12px; letter-spacing: 2px; margin-bottom: 20px; opacity: 0.6; }
-        .q-text { font-size: 20px; line-height: 1.6; margin-bottom: 40px; color: #fff; font-weight: bold; }
-        
+
+        .question-text {
+            font-size: 18px; line-height: 1.6; color: #fff;
+            margin-bottom: 20px; border-left: 4px solid var(--tang-gold);
+            padding-left: 15px;
+        }
+
         .option-btn {
-            display: block; width: 100%; padding: 18px; margin-bottom: 15px;
-            background: linear-gradient(90deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
-            border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 12px;
-            color: var(--shimmer); font-size: 16px; transition: all 0.3s;
-            text-align: left; padding-left: 30px;
+            display: block; width: 100%; padding: 15px;
+            background: linear-gradient(to right, #661010, #8B0000);
+            border: 1px solid var(--tang-gold);
+            color: var(--tang-gold); border-radius: 8px;
+            margin-bottom: 12px; text-align: left;
+            font-size: 15px; cursor: pointer; transition: 0.3s;
         }
-        .option-btn:active { background: var(--luxury-gold); color: var(--dark-red); transform: scale(0.98); }
+        .option-btn:hover { background: var(--tang-gold); color: var(--palace-red); }
 
-        /* --- 3. 结果海报页 (截图专用) --- */
-        #poster-view {
-            display: none; width: 100%; height: 100%;
-            align-items: center; justify-content: center;
-            background: rgba(0,0,0,0.8); z-index: 10;
+        /* 底部导航仿微信原生 */
+        .tab-bar {
+            position: fixed; bottom: 0; width: 100%; height: 60px;
+            background: #1a1a1a; display: flex; border-top: 1px solid #333;
         }
+        .tab-item { flex: 1; text-align: center; color: #888; font-size: 10px; padding-top: 10px; }
+        .tab-item.active { color: var(--tang-gold); }
 
-        /* 这是一个看起来像“红包+海报”的卡片 */
-        .share-poster {
-            width: 320px; height: 550px; background: #B72626;
-            border-radius: 16px; overflow: hidden; position: relative;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            border: 2px solid var(--luxury-gold);
-            display: flex; flex-direction: column;
+        .btn-pay {
+            background: linear-gradient(45deg, var(--tang-gold), #FFF8E1, var(--tang-gold));
+            color: #5C0000; font-weight: bold; padding: 18px; border-radius: 50px;
+            width: 100%; border: none; font-size: 20px; margin-top: 20px;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
         }
-
-        .poster-header {
-            height: 150px; background: linear-gradient(180deg, #D4AF37 0%, #B72626 100%);
-            display: flex; align-items: center; justify-content: center;
-            flex-direction: column;
-        }
-        .poster-header img { width: 60px; margin-bottom: 10px; }
-        .poster-title { color: #580808; font-weight: 900; font-size: 24px; letter-spacing: 5px; }
-
-        .poster-body {
-            flex: 1; background: #fff; margin: 10px; border-radius: 8px;
-            padding: 20px; text-align: center;
-            background-image: url('data:image/svg+xml;utf8,<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"><circle cx="1" cy="1" r="1" fill="%23ccc" opacity="0.2"/></svg>');
-        }
-        
-        .user-tag { color: #888; font-size: 12px; margin-bottom: 5px; }
-        .fortune-score { font-size: 60px; color: #B72626; font-weight: bold; margin: 10px 0; font-family: 'Arial', sans-serif; }
-        .fortune-text { font-size: 16px; color: #333; line-height: 1.6; text-align: justify; border-top: 1px dashed #ccc; padding-top: 15px; margin-top: 10px; }
-
-        .poster-footer {
-            height: 100px; background: #B72626; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
-        }
-        .qr-placeholder {
-            width: 70px; height: 70px; background: #fff; padding: 3px;
-        }
-        .qr-text { color: #F9E5BC; font-size: 12px; text-align: left; }
-        .qr-text b { font-size: 16px; color: #fff; display: block; margin-bottom: 5px; }
-
-        /* 引导提示 */
-        .save-tip {
-            position: absolute; bottom: 30px; color: #fff; font-size: 14px;
-            background: rgba(0,0,0,0.6); padding: 10px 20px; border-radius: 30px;
-            animation: bounce 2s infinite; pointer-events: none;
-        }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-        /* 通用动画 */
-        .fade-in { animation: fadeIn 0.5s forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .hidden { display: none !important; }
-
     </style>
 </head>
 <body>
-    <div class="master-bg"></div>
-    <div class="clouds-layer"></div>
-    <div class="gold-dust"></div>
 
-    <div class="app-container">
-        
-        <div id="view-home" class="hero-section">
-            <div class="logo-seal"></div>
-            <div class="main-title">乙巳·天官赐福</div>
-            <div class="sub-title">WORLD CLASS FORTUNE 2026</div>
-            <button class="start-btn" onclick="goToQ1()">开启新年运</button>
-            <p style="margin-top: 20px; font-size: 12px; opacity: 0.6;">已有 9,998,102 位福主领取</p>
+    <div class="header-bg">
+        <div class="title-area">
+            <h1 class="main-title">2026马到成功</h1>
+            <div style="letter-spacing: 2px; opacity: 0.8;">—— 乙巳蛇去 · 丙午马鸣 ——</div>
         </div>
+    </div>
 
-        <div id="view-q1" class="question-card">
-            <div class="q-progress">天机演算 · 第一章</div>
-            <div class="q-text">2026是“离火九运”爆发元年。<br>如果这一年你没有任何改变，你是否做好了<span style="color:var(--luxury-gold); border-bottom:1px solid">阶层下滑</span>的准备？</div>
-            <div class="option-btn" onclick="goToQ2()">我不接受平庸，我要破局</div>
-            <div class="option-btn" onclick="goToQ2()">我担心风险，只想求稳</div>
-        </div>
-
-        <div id="view-q2" class="question-card">
-            <div class="q-progress">天机演算 · 最终章</div>
-            <div class="q-text">如果你的朋友圈里有一个能带你赚钱的“贵人”，你认为你一直没发财是因为？</div>
-            <div class="option-btn" onclick="generating()">磁场不合，总是错过机会</div>
-            <div class="option-btn" onclick="generating()">没有抓住过年这波大运</div>
-        </div>
-
-        <div id="view-loading" class="question-card" style="text-align: center;">
-            <div style="width:50px; height:50px; border:3px solid var(--luxury-gold); border-top:transparent; border-radius:50%; animation:spin 1s infinite linear; margin:0 auto 30px;"></div>
-            <div style="color:var(--luxury-gold); font-size:16px;">正在链接北斗九星磁场...</div>
-            <div style="margin-top:10px; font-size:12px; color:#aaa;">精准度 99.9%</div>
-            <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
-        </div>
-
-        <div id="poster-view">
-            <div class="share-poster" id="final-poster">
-                <div class="poster-header">
-                    <div style="font-size: 40px; color: #580808;">🐲</div>
-                    <div class="poster-title">上上大吉</div>
-                </div>
-                
-                <div class="poster-body">
-                    <div class="user-tag">2026 乙巳年 · 运势评分</div>
-                    <div class="fortune-score">98<span style="font-size:20px">分</span></div>
-                    
-                    <div class="fortune-text">
-                        <b>【天命批语】</b><br>
-                        离火入命，势不可挡。你在2025年的所有隐忍，都将在2026年化为爆发的燃料。
-                        <br><br>
-                        <span style="color:#B72626">⚠️ 关键指引：</span><br>
-                        您的财运贵人就藏在朋友圈中。将此签文<b>发给一位最好的朋友</b>，即可激活“双倍财运”磁场。
-                    </div>
-                </div>
-
-                <div class="poster-footer">
-                    <div class="qr-text">
-                        <b>扫码接龙</b>
-                        <span>领取您的专属福气</span>
-                    </div>
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://your-website-url.com" class="qr-placeholder" alt="QR Code">
-                </div>
+    <div class="quiz-container">
+        <div class="card" id="q1">
+            <div class="question-text">
+                离火九运已进入中局，如果2026年你依然错过“丙午马”的能量加持，你是否准备好面对未来5年的财运停滞？
             </div>
-
-            <div class="save-tip">📸 请截图保存海报，分享给朋友激活好运</div>
-            
-            <button onclick="location.reload()" style="position: absolute; bottom: -50px; background:none; border:1px solid rgba(255,255,255,0.3); color:#fff; padding:5px 15px; border-radius:20px; font-size:12px;">重新测算</button>
+            <button class="option-btn" onclick="next(1)">我不接受停滞，我要精准把握机会</button>
+            <button class="option-btn" onclick="next(1)">我认命了，随波逐流（极低概率选择）</button>
         </div>
 
+        <div class="card" id="relay-card" style="display:none;">
+            <div style="text-align:center;">
+                <h2 style="color:var(--tang-gold)">恭喜！你是第 8,829 位接龙者</h2>
+                <p>你的马年运势报告已生成（已加密）</p>
+                <div style="font-size:40px; margin:20px;">🧧</div>
+                <p style="font-size:12px; color:#aaa;">⚠️ 警告：如果不将此福气传给3位好友，生成的“马到成功”磁场将在10分钟内失效并转为流失。</p>
+                <button class="btn-pay" onclick="pay()">¥9.9 支付解锁并稳固好运</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-bar">
+        <div class="tab-item active">首页</div>
+        <div class="tab-item">运势</div>
+        <div class="tab-item">福袋</div>
+        <div class="tab-item">我的</div>
     </div>
 
     <script>
-        function goToQ1() {
-            document.getElementById('view-home').classList.add('hidden');
-            document.getElementById('view-q1').style.display = 'block';
-            document.getElementById('view-q1').classList.add('fade-in');
+        function next(id) {
+            document.getElementById('q1').style.display = 'none';
+            document.getElementById('relay-card').style.display = 'block';
         }
-
-        function goToQ2() {
-            document.getElementById('view-q1').classList.add('hidden');
-            document.getElementById('view-q2').style.display = 'block';
-            document.getElementById('view-q2').classList.add('fade-in');
-        }
-
-        function generating() {
-            document.getElementById('view-q2').classList.add('hidden');
-            document.getElementById('view-loading').style.display = 'block';
-
-            setTimeout(() => {
-                document.getElementById('view-loading').classList.add('hidden');
-                document.getElementById('poster-view').style.display = 'flex';
-                document.getElementById('final-poster').classList.add('fade-in');
-            }, 3000);
+        function pay() {
+            alert("正在调用微信支付... 支付成功后将跳转至【马到成功】PDF报告及海报生成页面");
         }
     </script>
 </body>
