@@ -3,171 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>2026离火流年 · 终身运势批斗</title>
+    <title>2026离火流年运势·专业版</title>
     <style>
-        :root { --gold: #D4AF37; --red: #8B0000; --paper: #FDF6E9; }
-        body, html { margin: 0; padding: 0; background: #000; font-family: "PingFang SC", "STHeiti", sans-serif; color: var(--gold); }
-        
-        /* 1:1 复刻背景：暗红浮雕纹理 */
-        .app-bg {
+        :root { --main-gold: #D4AF37; --deep-red: #7C0A02; --text-color: #F5F5DC; }
+        body, html { margin: 0; padding: 0; background: #0a0a0a; color: var(--text-color); font-family: 'PingFang SC', sans-serif; }
+
+        /* 背景：动态流金色粒子感 */
+        .bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #4A0404 0%, #000 100%);
+            background: radial-gradient(circle at center, #3d0000 0%, #000 100%);
             z-index: -1;
         }
-        .bg-pattern {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png');
-            opacity: 0.1; z-index: -1;
+
+        .container { display: flex; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; min-height: 100vh; }
+
+        /* 顶部装饰：对标大厂的专业 banner */
+        .banner {
+            width: 100%; max-width: 400px; background: linear-gradient(135deg, #8B0000, #4A0404);
+            border: 1px solid var(--main-gold); padding: 20px; text-align: center;
+            border-radius: 8px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        .banner h1 { margin: 0; font-size: 22px; letter-spacing: 2px; color: var(--main-gold); }
+        .banner p { margin: 10px 0 0; font-size: 13px; opacity: 0.8; }
+
+        /* 专业录入表单 */
+        .form-card {
+            width: 100%; max-width: 400px; background: rgba(20, 20, 20, 0.95);
+            border: 1.5px solid var(--main-gold); padding: 25px; box-sizing: border-box;
+            border-radius: 12px; box-shadow: 0 0 30px rgba(124, 10, 2, 0.3);
+        }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 12px; color: var(--main-gold); margin-bottom: 8px; letter-spacing: 1px; }
+        .input-group input, .input-group select {
+            width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333;
+            color: #fff; font-size: 16px; border-radius: 6px; box-sizing: border-box; outline: none;
+        }
+        .input-group input:focus { border-color: var(--main-gold); }
+
+        .gender-box { display: flex; gap: 10px; }
+        .gender-btn {
+            flex: 1; padding: 12px; border: 1px solid #333; text-align: center;
+            border-radius: 6px; cursor: pointer; transition: 0.3s;
+        }
+        .gender-btn.active { border-color: var(--main-gold); background: rgba(212, 175, 55, 0.1); color: var(--main-gold); }
+
+        /* 动态按钮 */
+        .btn-submit {
+            width: 100%; background: linear-gradient(to right, #D4AF37, #B18A4D);
+            color: #3d0000; border: none; padding: 16px; font-size: 18px;
+            font-weight: bold; border-radius: 30px; margin-top: 10px; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
         }
 
-        .container { display: flex; flex-direction: column; align-items: center; padding-top: 40px; }
-
-        /* 顶部装饰：古风卷轴头 */
-        .header-decor { width: 90%; max-width: 400px; height: 60px; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><path d="M0 10 Q 25 0, 50 10 T 100 10" fill="none" stroke="%23D4AF37" stroke-width="1"/></svg>') repeat-x; }
-
-        /* 测算卡片：高仿 APP 质感 */
-        .quiz-card {
-            width: 90%; max-width: 400px; background: rgba(15, 15, 15, 0.9);
-            border: 1px solid var(--gold); padding: 30px 20px; box-sizing: border-box;
-            box-shadow: 0 0 30px rgba(139, 0, 0, 0.5); border-radius: 4px; position: relative;
+        /* 加载动画层 */
+        #loader { display: none; text-align: center; padding: 50px 20px; }
+        .spin {
+            width: 60px; height: 60px; border: 4px solid var(--main-gold);
+            border-top-color: transparent; border-radius: 50%;
+            animation: rotate 1s linear infinite; margin: 0 auto 20px;
         }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* 支付页 */
+        #pay-page { display: none; text-align: center; width: 100%; max-width: 400px; }
+        .price-box { font-size: 50px; color: var(--main-gold); font-weight: bold; margin: 20px 0; }
+        .price-box span { font-size: 20px; }
+
+        /* 报告页 */
+        #report-page { display: none; background: #fdf6e9; color: #333; padding: 30px 20px; min-height: 100vh; }
+        .report-card { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--deep-red); }
         
-        .q-tag { color: var(--gold); font-size: 12px; letter-spacing: 3px; margin-bottom: 10px; opacity: 0.7; }
-        .q-title { color: #fff; font-size: 20px; line-height: 1.5; margin-bottom: 30px; font-weight: 600; }
-
-        /* 选项：带点击反馈的丝绒感按钮 */
-        .opt-item {
-            background: linear-gradient(135deg, #1a1a1a 0%, #050505 100%);
-            border: 1px solid rgba(212, 175, 55, 0.3); padding: 18px; margin-bottom: 15px;
-            color: var(--gold); border-radius: 8px; font-size: 16px; position: relative;
-            transition: all 0.2s;
-        }
-        .opt-item:active { background: var(--gold); color: #000; transform: translateY(2px); }
-
-        /* 加载动画：仿 AI 演算 */
-        #loader { display: none; text-align: center; }
-        .spinner {
-            width: 80px; height: 80px; border: 3px solid var(--gold); border-top-color: transparent;
-            border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* 报告页：仿宣纸长文案 */
-        #report-page {
-            display: none; width: 100%; background: var(--paper); color: #333;
-            min-height: 100vh; padding: 40px 20px; box-sizing: border-box;
-        }
-        .report-box { background: #fff; border: 1px solid #ddd; padding: 20px; border-radius: 4px; margin-bottom: 20px; }
-        .report-box h3 { border-bottom: 2px solid var(--red); color: var(--red); padding-bottom: 10px; margin-top: 0; }
-        .gold-seal { float: right; width: 60px; opacity: 0.8; }
-
-        .btn-unlock {
-            background: var(--red); color: #fff; border: none; padding: 20px;
-            width: 100%; font-size: 18px; font-weight: bold; border-radius: 40px;
-            box-shadow: 0 10px 20px rgba(139, 0, 0, 0.4); margin-top: 20px;
-        }
-
         .hidden { display: none; }
     </style>
 </head>
 <body>
-    <div class="app-bg"></div>
-    <div class="bg-pattern"></div>
+    <div class="bg-layer"></div>
 
-    <div class="container" id="main-ui">
-        <div class="header-decor"></div>
-        
-        <div id="quiz-step" class="quiz-card">
-            <div class="q-tag">庚子·离火天机演算</div>
-            <div id="q-title" class="q-title">2026年即将步入离火运，你是否感到原本稳定的收入来源正在松动？</div>
-            <div id="options">
-                <div class="opt-item" onclick="nextQ()">感觉强烈，寻求转型</div>
-                <div class="opt-item" onclick="nextQ()">暂时稳定，但有焦虑</div>
+    <div class="container">
+        <div id="step-1" style="width: 100%; max-width: 400px;">
+            <div class="banner">
+                <h1>离火九运 · 2026流年批斗</h1>
+                <p>—— 已为 45.2 万人解析天命路径 ——</p>
+            </div>
+            
+            <div class="form-card">
+                <div class="input-group">
+                    <label>您的姓名</label>
+                    <input type="text" id="username" placeholder="请输入真实姓名">
+                </div>
+                <div class="input-group">
+                    <label>您的性别</label>
+                    <div class="gender-box">
+                        <div class="gender-btn active" onclick="setGender(this, '男')">乾造（男）</div>
+                        <div class="gender-btn" onclick="setGender(this, '女')">坤造（女）</div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>出生日期（公历）</label>
+                    <input type="date" id="birthday" value="1995-01-01">
+                </div>
+                <button class="btn-submit" onclick="startAnalysis()">立即获取 2026 运势报告</button>
+                <p style="font-size: 11px; text-align: center; color: #666; margin-top: 15px;">🔒 隐私保护：您的信息仅用于排盘演算</p>
             </div>
         </div>
 
-        <div id="loader" class="quiz-card">
-            <div class="spinner"></div>
-            <div style="font-size: 14px; letter-spacing: 2px;">正在调取《三命通会》底层逻辑...</div>
-            <div id="progress-text" style="color: #fff; margin-top: 10px;">已匹配 0%</div>
+        <div id="loader" class="form-card">
+            <div class="spin"></div>
+            <p id="load-text" style="color: var(--main-gold);">正在通过生辰八字排盘...</p>
         </div>
 
-        <div id="pay-step" class="quiz-card hidden" style="text-align: center;">
-            <div style="color: var(--gold); font-size: 24px; font-weight: bold;">演算成功！</div>
-            <p style="color: #ccc; font-size: 14px;">已为您生成《2026离火·个人翻盘报告》</p>
-            <div style="background: rgba(255,255,255,0.05); padding: 20px; margin: 20px 0; border-radius: 8px;">
-                <div style="font-size: 12px; color: #888;">限时结缘价</div>
-                <div style="font-size: 48px; color: #fff; font-weight: bold;">¥ 9.90</div>
-                <div style="text-decoration: line-through; color: #666; font-size: 14px;">原价 ¥199</div>
-            </div>
-            <button class="btn-unlock" onclick="doPay()">解锁我的 2026 天命</button>
-            <p style="font-size: 11px; color: #ff4d4d; margin-top: 15px;">⚠️ 此天机报告仅对本人有效，泄露必究</p>
+        <div id="pay-page" class="form-card">
+            <div style="color: var(--main-gold); border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px;">演算结果已锁定</div>
+            <p style="font-size: 14px; line-height: 1.6;">报告内容包括：<br>【2026流年总运】+【月度财运表】+【避坑指南】</p>
+            <div class="price-box"><span>¥</span>9.90</div>
+            <button class="btn-submit" onclick="showReport()">立即支付解锁</button>
         </div>
     </div>
 
     <div id="report-page">
-        <div style="text-align: center; margin-bottom: 30px;">
-            <img src="https://img.icons8.com/color/96/dragon.png" width="50" style="margin-bottom: 10px;">
-            <h1 style="color: var(--red); margin: 0;">2026 离火流年报告</h1>
+        <center><h2 style="color: var(--deep-red);">2026 离火流年报告</h2></center>
+        <p>尊敬的 <span id="res-name" style="font-weight: bold; color: var(--deep-red);"></span>：</p>
+        
+        <div class="report-card">
+            <h3 style="margin-top: 0; color: var(--deep-red);">【离火大运·批斗】</h3>
+            <p>2026为丙午年，火旺之极。您的生辰八字显示，此年为您的“贵人入命”年。过去积攒的能量将在农历三月后集中爆发。</p>
         </div>
 
-        <div class="report-box">
-            <img src="https://img.icons8.com/color/96/guarantee.png" class="gold-seal">
-            <h3>【总格：朱雀抬头】</h3>
-            <p>2026年是您运势的“清算年”。过去三年的霉运将在此刻对冲消解。离火主智慧与科技，您的破局点在于“新”而非“旧”。</p>
+        <div class="report-card">
+            <h3 style="margin-top: 0; color: var(--deep-red);">【财运对冲】</h3>
+            <p>财星入库，宜从商不宜从政。建议关注正南方位，那是您的本命福地。</p>
         </div>
-
-        <div class="report-box">
-            <h3>【财帛：九运红利】</h3>
-            <p><b>最旺月份：</b> 农历三月、九月。<br><b>避坑点：</b> 农历六月切勿大额投资。您的财位在正南方，建议摆放红色饰品激活能量场。</p>
-        </div>
-
-        <div class="report-box">
-            <h3>【贵人：方位锁定】</h3>
-            <p>今年将有一位姓氏中带有“木”部首的人在事业上拉你一把。多留意社交场合中沉默寡言但眼神锐利的中年男性。</p>
-        </div>
-
-        <center><button class="btn-unlock" onclick="location.reload()" style="background:#555; width: auto; padding: 10px 30px;">重新测评</button></center>
+        
+        <center><button onclick="location.reload()" style="padding: 10px 30px; border-radius: 20px; border: 1px solid #8B0000; background: none; color: #8B0000;">重新测算</button></center>
     </div>
 
     <script>
-        const qs = [
-            "2026年即将步入离火运，你是否感到原本稳定的收入来源正在松动？",
-            "如果有一份能够让你少奋斗 5 年的改命方案，你是否具备执行力？",
-            "你认为你生命中的‘贵人’是已经出现，还是尚在远方？",
-            "面对 2026 的行业大洗牌，你的第一直觉是兴奋还是恐惧？"
-        ];
-        let qIdx = 0;
+        let gender = "男";
 
-        function nextQ() {
-            qIdx++;
-            if(qIdx < qs.length) {
-                document.getElementById('q-title').innerText = qs[qIdx];
-            } else {
-                showLoader();
-            }
+        function setGender(el, val) {
+            document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            gender = val;
         }
 
-        function showLoader() {
-            document.getElementById('quiz-step').style.display = 'none';
+        function startAnalysis() {
+            const name = document.getElementById('username').value;
+            if(!name) return alert('请输入姓名以精准排盘');
+            
+            document.getElementById('step-1').classList.add('hidden');
             document.getElementById('loader').style.display = 'block';
+
             let p = 0;
+            const texts = ["正在排盘生辰八字...", "正在结合离火九运逻辑...", "正在生成 2026 对冲报告...", "结果已锁定！"];
+            let i = 0;
+            
             let timer = setInterval(() => {
-                p += Math.floor(Math.random()*15);
-                if(p >= 100) {
+                i++;
+                if(i < texts.length) {
+                    document.getElementById('load-text').innerText = texts[i];
+                } else {
                     clearInterval(timer);
                     document.getElementById('loader').style.display = 'none';
-                    document.getElementById('pay-step').classList.remove('hidden');
+                    document.getElementById('pay-page').style.display = 'block';
                 }
-                document.getElementById('progress-text').innerText = `已匹配 ${p > 100 ? 100 : p}%`;
-            }, 300);
+            }, 1000);
         }
 
-        function doPay() {
-            alert("正在跳转微信支付...");
-            document.getElementById('main-ui').style.display = 'none';
+        function showReport() {
+            alert("正在调用微信支付...");
+            document.getElementById('res-name').innerText = document.getElementById('username').value;
+            document.querySelector('.container').style.display = 'none';
             document.getElementById('report-page').style.display = 'block';
-            window.scrollTo(0, 0);
+            window.scrollTo(0,0);
         }
     </script>
 </body>
